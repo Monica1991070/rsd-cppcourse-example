@@ -1,6 +1,7 @@
 // We write comments like this
 
 #include <iostream> //Include standard library file which provides input and output capabilities ("print statements") 
+
 #include "Species.h" // Include our own library file for describing a reaction system
 
 int main(int argument_count, char ** command_line_arguments) // Define the main function, which is the entry point to the program.
