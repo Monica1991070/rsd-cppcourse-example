@@ -7,6 +7,7 @@
 #include "Solver.h"
 #include <fstream>
 
+
 int main(int argument_count, const char ** command_line_arguments) // Define the main function, which is the entry point to the program.
 { 
 	reactor::CommandLineParser parser(argument_count,command_line_arguments);
