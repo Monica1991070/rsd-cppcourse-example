@@ -50,14 +50,16 @@ reactor::Species * reactor::ReactionSystemParser::NewOrFind(ReactionSystem * res
 	return species_map[name];
 }
 
-void reactor::ReactionSystemParser::ParseSpeciesList(std::string & source,
+void reactor::ReactionSystemParser::ParseSpeciesList(std::istream & source,
 	std::vector<std::string> &species_names)
 {
-	boost::split(species_names,source,boost::is_any_of("+"));
-	for (std::vector<std::string>::iterator species=species_names.begin(); 
-		species!=species_names.end(); species++)
-	{
-		boost::trim(*species);
+	std::string word;
+	while (source.good()){
+		source >> word;
+		std::cout << word << std::endl;
+		if (word==">") break;
+		if (word=="+") continue;
+		species_names.push_back(word);
 	}
 }
 
@@ -66,20 +68,9 @@ void reactor::ReactionSystemParser::ParseLine(std::string & line,
 	std::vector<std::string> & product_names, 
 	double & rate)
 {
-	std::string piece("");
-	std::string separator("");
-	bool found_reactants=false;
-	// split the string by spaces
-	std::vector<std::string> sections;
-	boost::split(sections,line,boost::is_any_of(">"));
-	if (sections.size()!=3)
-	{
-		return;
-	}
-
-	ParseSpeciesList(sections[0],reactant_names);
-	ParseSpeciesList(sections[2],product_names);
-	boost::trim(sections[1]);
-	rate=boost::lexical_cast<double>(sections[1]);
-
+	std::stringstream source(line);
+	ParseSpeciesList(source,reactant_names);
+	std::string throwawayarrow;
+	source>>rate>>throwawayarrow;
+	ParseSpeciesList(source,product_names);
 }
