@@ -25,7 +25,9 @@ namespace reactor {
       const std::string &name);
     
   private:
-    std::map<int, int> species_map;
+    std::map<std::string, Species *> species_map;
+    void ParseSpeciesList(std::istream & source,
+      std::vector<std::string> &species_names);
   };
 }
 

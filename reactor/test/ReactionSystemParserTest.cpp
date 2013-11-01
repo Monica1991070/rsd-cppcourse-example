@@ -20,11 +20,10 @@ TEST_F(ReactionSystemParserTest, ParserCanStart) {
 }
 
 TEST_F(ReactionSystemParserTest, ParserCanCreateSpecies) {
-	// Define your reaction system file format sensibly here
 	std::istringstream buffer(
-		"// First reaction text\n"
-		"// Second reaction text\n"
-		"// Third reaction text\n"		
+		"A + B > 2.0 > C + D\n"
+		"C > 3.0 > E + F\n"
+		"A > 5.0 > C\n"
 		);
 	ReactionSystem * system = parser.FromStream(buffer);
 	ASSERT_EQ(6,system->GetSpecies().size());
@@ -38,11 +37,10 @@ TEST_F(ReactionSystemParserTest, ParserCanCreateSpecies) {
 }
 
 TEST_F(ReactionSystemParserTest, ParserCanCreateReactions) {
-	// Define your reaction system file format sensibly here
 	std::istringstream buffer(
-		"// First reaction text\n"
-		"// Second reaction text\n"
-		"// Third reaction text\n"
+		"A + B > 2.0 > C + D\n"
+		"C > 3.0 > E + F\n"
+		"A > 5.0 > C\n"
 		);
 	ReactionSystem * system = parser.FromStream(buffer);
 	ASSERT_EQ(3,system->GetReactions().size());
@@ -53,11 +51,10 @@ TEST_F(ReactionSystemParserTest, ParserCanCreateReactions) {
 }
 
 TEST_F(ReactionSystemParserTest, ParserReactionsHaveAppropriateSpecies) {
-	// Define your reaction system file format sensibly here
 	std::istringstream buffer(
-		"// First reaction text\n"
-		"// Second reaction text\n"
-		"// Third reaction textC\n"
+		"A + B > 2.0 > C + D\n"
+		"C > 3.0 > E + F\n"
+		"A > 5.0 > C\n"
 		);
 	ReactionSystem * system = parser.FromStream(buffer);
 
@@ -100,8 +97,7 @@ TEST_F(ReactionSystemParserTest, ParserCanFindExistingSpecies) {
 }
 
 TEST_F(ReactionSystemParserTest, ParseLine) {
-	// Define one reaction from your file format sensibly here
-	std::string source("//Reaction Text Here");
+	std::string source("A + B > 2.0 > C + D");
 	std::vector<std::string> reactant_names;
  	std::vector<std::string> product_names;
  	double rate(0.0);
