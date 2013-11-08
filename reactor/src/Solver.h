@@ -16,7 +16,8 @@ namespace reactor{
 		
 		~Solver();
 
-		unsigned int Solve(double start_time, double end_time, double initial_step, std::vector<double> &initial_conditions);
+		unsigned int Solve(double start_time, double end_time, 
+			double initial_step, std::vector<double> &initial_conditions);
 
 		void operator() ( const std::vector<double> &x , std::vector<double> &dxdt , const double);
 

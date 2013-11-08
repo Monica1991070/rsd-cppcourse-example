@@ -20,10 +20,12 @@ reactor::Solver::~Solver() {
 	delete system;
 }
 
-unsigned int reactor::Solver::Solve(double start_time, double end_time, double initial_step, std::vector<double> &initial_concentrations)
+unsigned int reactor::Solver::Solve(double start_time, double end_time, 
+		double initial_step, std::vector<double> &initial_concentrations)
 {
 	system->SetConcentrations(initial_concentrations);
-	return boost::numeric::odeint::integrate(boost::ref(*this), initial_concentrations, start_time, end_time, initial_step, boost::bind(&Solver::observe_integration,this,_1,_2));
+	return boost::numeric::odeint::integrate(boost::ref(*this), initial_concentrations, 
+		start_time, end_time, initial_step, boost::bind(&Solver::observe_integration,this,_1,_2));
 }
 
 void reactor::Solver::operator() ( const std::vector<double> &x , std::vector<double> &dxdt , const double)
