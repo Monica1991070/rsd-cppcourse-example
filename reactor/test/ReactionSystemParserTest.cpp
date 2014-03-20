@@ -58,6 +58,7 @@ TEST_F(ReactionSystemParserTest, ParserReactionsHaveAppropriateSpecies) {
 		);
 	ReactionSystem * system = parser.FromStream(buffer);
 
+	ASSERT_EQ(3,system->GetReactions().size());
 	ASSERT_EQ(2,system->GetReactions()[0]->GetReactants().size());
 	ASSERT_EQ(2,system->GetReactions()[0]->GetProducts().size());
 	ASSERT_EQ(1,system->GetReactions()[1]->GetReactants().size());

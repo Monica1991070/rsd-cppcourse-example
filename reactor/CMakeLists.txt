@@ -14,10 +14,6 @@ add_executable(reactor reactor.cpp) # The executable to make is
 									 # called "reactor" and depends on the listed source files and libraries
 target_link_libraries(reactor reactor_library) # Add our library of reaction system code to the executable
 
-# We need the odeint boost library
-
-
-
 # Boilerplate to enable the Google testing framework
 INCLUDE(ExternalProject)
 set(EXTERNAL_ROOT ${CMAKE_BINARY_DIR}/external)

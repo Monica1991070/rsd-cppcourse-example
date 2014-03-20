@@ -5,8 +5,8 @@ using namespace reactor;
 
 class ReactionSystemTest: public ::testing::Test {
 protected:
-	ReactionSystem myReactionSystem;
 	ReactionSystem emptyReactionSystem;
+	ReactionSystem myReactionSystem;
 	Reaction &forward;
 	Reaction &reverse;
 	Species &calcium;
@@ -15,9 +15,9 @@ protected:
 	Species &calcium_carbonate;
 
 	ReactionSystemTest():
-		myReactionSystem(),
+		emptyReactionSystem(),
 		forward(myReactionSystem.NewReaction(9.0)),
-		reverse(myReactionSystem.NewReaction(11.0)), 
+		reverse(myReactionSystem.NewReaction(11.0)),
 		calcium(myReactionSystem.NewSpecies("Ca")),
 		oxygen(myReactionSystem.NewSpecies("O")),
 		carbon(myReactionSystem.NewSpecies("C")),
@@ -111,32 +111,6 @@ TEST_F(ReactionSystemTest, ReactionSystemCanDetermineRatesOfChange){
 	rates_of_change.push_back(-9.0*2.0*3.0*5.0+11.0*7.0); //oxygen
 	rates_of_change.push_back(9.0*2.0*3.0*5.0-11.0*7.0); //calcium carbonate
 	EXPECT_EQ(rates_of_change,myReactionSystem.GetRatesOfChange());
-}
-
-TEST_F(ReactionSystemTest, ReactionSystemCanDetermineRatesOfChangeInFormatExpectedByODEINT){
-	std::vector<double> expected_rates_of_change;
-	expected_rates_of_change.push_back(-9.0*9.0*11.0*13.0+11.0*17.0); //calcium
-	expected_rates_of_change.push_back(-9.0*9.0*11.0*13.0+11.0*17.0); //carbon
-	expected_rates_of_change.push_back(-9.0*9.0*11.0*13.0+11.0*17.0); //oxygen
-	expected_rates_of_change.push_back(9.0*9.0*11.0*13.0-11.0*17.0); //calcium carbonate
-
-	std::vector<double> concentrations;
-	concentrations.push_back(9.0);
-	concentrations.push_back(11.0);
-	concentrations.push_back(13.0);
-	concentrations.push_back(17.0);
-
-	std::vector<double> actual_rates_of_change;
-	myReactionSystem.GetRatesGivenConcentrations(concentrations,actual_rates_of_change);
-
-	EXPECT_EQ(expected_rates_of_change,actual_rates_of_change);
-}
-
-TEST_F(ReactionSystemTest, ReactionSystemCanOutputToAStream) {
-	std::ostringstream output_buffer;
-	output_buffer << myReactionSystem;
-
-	EXPECT_EQ("Ca + C + O > 9 > CaCO3\nCaCO3 > 11 > Ca + C + O\n", output_buffer.str());
 }
 
 int main(int argc, char **argv) { // A main function scaffold to call the tests

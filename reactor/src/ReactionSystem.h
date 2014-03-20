@@ -20,19 +20,16 @@ namespace reactor{
 
     Species & NewSpecies(const std::string &name);
     const std::vector<Species *> & GetSpecies() const { return species;}
-    
+
     const std::vector<double> GetRatesOfChange() const; // Given the current species concentrations, return the rates of change
     const std::vector<double> GetConcentrations() const ; // return array of species concentrations
     void GetRatesGivenConcentrations(const std::vector<double> & concentrations, std::vector<double> & rates);
     void SetConcentrations(const std::vector<double> & );
 
   private:
-    ReactionSystem(const ReactionSystem& that); //disable copy
     std::vector< Reaction * > reactions;
     std::vector< Species * > species;
   };
 }
-
-std::ostream & operator<<(std::ostream &s, const reactor::ReactionSystem& system);
 
 #endif //ONCE_REACTIONSYSTEM_H
