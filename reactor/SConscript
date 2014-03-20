@@ -1,39 +1,10 @@
 # Define a build environment for the build
 env=Environment(
   LIBS='reactor', #Link to this library
-  CPPPATH=['.','src'], #Search here for include files,
-  LIBPATH=['.']) #Search here for libraries
+  CPPPATH=['#reactor','#reactor/src'], #Search here for include files,
+  LIBPATH=['#build/src']) #Search here for libraries
 
-# Make a library based on all the source files
-# (Use "glob" to find all the C++ source files)
-env.Library('reactor',Glob("src/*.cpp"))
+SConscript(['src/SConscript','test/SConscript'],'env')
 
 # Declare a main program, in the environment defined above
 reactor=env.Program('reactor.cpp')
-
-# There are libraries needed for testing which are not needed
-# for the main executable
-# So create a sub-environment for them
-test_env=env.Clone()
-
-# Include the google unit testing framework in the test environment
-# Leading '#' means the path is relative to the top-level SConstruct
-test_env.Append(
-  CPPPATH='#libraries/gtest/include',
-  LIBPATH='#libraries/build/',
-  LIBS=['gtest'])
-
-# Now, for every test executable:
-for test in Glob('test/*.cpp'):
-  # Declare a new main program
-  test_object=test_env.Object(test)
-  test_executable=test_env.Program(test_object)
-  Depends(test_object,Alias('google-test'))
-  # Add Executing that test to a custom target called "check"
-  # To be executed with 'scons check'
-  test_alias=test_env.Alias('check',
-    test_executable,
-    test_executable[0].abspath)
-
-# The 'scons check' should always run if you invoke it
-AlwaysBuild(test_alias)

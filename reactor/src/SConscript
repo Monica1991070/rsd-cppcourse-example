@@ -1,0 +1,5 @@
+Import('env')
+
+# Make a library based on all the source files
+# (Use "glob" to find all the C++ source files)
+env.Library('reactor',Glob("*.cpp"))
