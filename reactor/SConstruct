@@ -1,0 +1,13 @@
+VariantDir('build', '.', duplicate=0)
+env=Environment(LIBS='reactor',CPPPATH=['.','src'],LIBPATH=['build'])
+env.Library('build/reactor',Glob("build/src/*.cpp"))
+env.Program('build/reactor.cpp')
+
+test_env=env.Clone()
+test_env.Append(CPPPATH='libraries/gtest/include',
+  LIBPATH='libraries/gtest/build',LIBS=['gtest'])
+for test in Glob('build/test/*.cpp'):
+  test_executable=test_env.Program(test)
+  test_alias=test_env.Alias('check', test_executable,
+    test_executable[0].abspath)
+AlwaysBuild(test_alias)
