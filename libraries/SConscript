@@ -1,0 +1,9 @@
+env=Environment()
+
+download_step=env.Command('gtest',None,
+  'svn checkout http://googletest.googlecode.com/svn/tags/release-1.7.0 $TARGET')
+configure_step=env.Command('build/Makefile','gtest',
+  "cmake ../gtest",chdir='libraries/build')
+build_step=env.Command('build/libgtest.a','build/Makefile',"make",
+  chdir='libraries/build')
+Alias('google-test',[build_step,configure_step,download_step])

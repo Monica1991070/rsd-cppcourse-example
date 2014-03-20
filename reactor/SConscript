@@ -9,7 +9,7 @@ env=Environment(
 env.Library('reactor',Glob("src/*.cpp"))
 
 # Declare a main program, in the environment defined above
-env.Program('reactor.cpp')
+reactor=env.Program('reactor.cpp')
 
 # There are libraries needed for testing which are not needed
 # for the main executable
@@ -20,13 +20,15 @@ test_env=env.Clone()
 # Leading '#' means the path is relative to the top-level SConstruct
 test_env.Append(
   CPPPATH='#libraries/gtest/include',
-  LIBPATH='#libraries/gtest/build',
+  LIBPATH='#libraries/build/',
   LIBS=['gtest'])
 
 # Now, for every test executable:
 for test in Glob('test/*.cpp'):
   # Declare a new main program
-  test_executable=test_env.Program(test)
+  test_object=test_env.Object(test)
+  test_executable=test_env.Program(test_object)
+  Depends(test_object,Alias('google-test'))
   # Add Executing that test to a custom target called "check"
   # To be executed with 'scons check'
   test_alias=test_env.Alias('check',
