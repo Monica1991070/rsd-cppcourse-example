@@ -1,13 +1,42 @@
+# Build out-of-the-source tree
+# In a folder called build
+# Which is a shadow of the current folder where this file sits ('.')
+# But don't copy all the .cpp and .h files into it
 VariantDir('build', '.', duplicate=0)
-env=Environment(LIBS='reactor',CPPPATH=['.','src'],LIBPATH=['build'])
+
+# Define a build environment for the build
+env=Environment(
+  LIBS='reactor', #Link to this library
+  CPPPATH=['.','src'] #Search here for include files,
+  LIBPATH=['build']) #Search here for libraries
+
+# Make a library based on all the source files
+# (Use "glob" to find all the C++ source files)
 env.Library('build/reactor',Glob("build/src/*.cpp"))
+
+# Declare a main program, in the environment defined above
 env.Program('build/reactor.cpp')
 
+# There are libraries needed for testing which are not needed
+# for the main executable
+# So create a sub-environment for them
 test_env=env.Clone()
-test_env.Append(CPPPATH='libraries/gtest/include',
-  LIBPATH='libraries/gtest/build',LIBS=['gtest'])
+
+# Include the google unit testing framework in the test environment
+test_env.Append(
+  CPPPATH='libraries/gtest/include',
+  LIBPATH='libraries/gtest/build',
+  LIBS=['gtest'])
+
+# Now, for every test executable:
 for test in Glob('build/test/*.cpp'):
+  # Declare a new main program
   test_executable=test_env.Program(test)
-  test_alias=test_env.Alias('check', test_executable,
+  # Add Executing that test to a custom target called "check"
+  # To be executed with 'scons check'
+  test_alias=test_env.Alias('check',
+    test_executable,
     test_executable[0].abspath)
+
+# The 'scons check' should always run if you invoke it
 AlwaysBuild(test_alias)
