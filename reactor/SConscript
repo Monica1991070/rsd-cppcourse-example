@@ -17,9 +17,10 @@ env.Program('reactor.cpp')
 test_env=env.Clone()
 
 # Include the google unit testing framework in the test environment
+# Leading '#' means the path is relative to the top-level SConstruct
 test_env.Append(
-  CPPPATH='libraries/gtest/include',
-  LIBPATH='libraries/gtest/build',
+  CPPPATH='#libraries/gtest/include',
+  LIBPATH='#libraries/gtest/build',
   LIBS=['gtest'])
 
 # Now, for every test executable:
